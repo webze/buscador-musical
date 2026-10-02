@@ -1,0 +1,391 @@
+<!doctype html>
+<html lang="es" data-theme="dark">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Panel de licencias — Buscador Musical</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Sora:wght@600;700;800&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@500;600&display=swap">
+<style>
+:root{
+  --bg:#0b1220; --bg2:#0e1626; --panel:#131f33; --panel2:#1a2942; --line:#26374f;
+  --fg:#eaf1fb; --muted:#9db0cc; --faint:#6f83a0;
+  --accent:#3b82f6; --accent2:#2563eb; --violet:#8b5cf6;
+  --ok:#22c55e; --okbg:rgba(34,197,94,.14);
+  --warn:#f5b942; --warnbg:rgba(245,185,66,.14); --bad:#f87171; --badbg:rgba(248,113,113,.14);
+  --f-display:"Sora","Segoe UI",system-ui,sans-serif; --f-body:"IBM Plex Sans","Segoe UI",system-ui,sans-serif; --f-mono:"IBM Plex Mono",Consolas,monospace;
+  --shadow:0 1px 2px rgba(0,0,0,.3),0 12px 34px rgba(0,0,0,.35);
+}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{background:
+   radial-gradient(1100px 560px at 85% -12%,#1a2b49 0%,rgba(16,30,54,0) 55%),
+   radial-gradient(900px 500px at 0% 0%,#1b1740 0%,rgba(16,30,54,0) 50%),
+   var(--bg);
+   color:var(--fg);font-family:var(--f-body);min-height:100vh;font-size:14px}
+.wrap{max-width:1140px;margin:0 auto;padding:22px 18px 70px}
+input,select,button{font:inherit}
+.hide{display:none!important}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+
+/* Login */
+#login{max-width:410px;margin:8vh auto 0;animation:fadeUp .5s ease both}
+.brand{display:flex;align-items:center;gap:12px;margin-bottom:22px;justify-content:center}
+.brand .logo{width:46px;height:46px;border-radius:13px;background:linear-gradient(135deg,var(--accent),var(--violet));display:grid;place-items:center;font-size:23px;box-shadow:0 6px 20px rgba(59,130,246,.4);animation:glow 3s ease-in-out infinite}
+@keyframes glow{0%,100%{box-shadow:0 6px 20px rgba(59,130,246,.35)}50%{box-shadow:0 6px 30px rgba(139,92,246,.6)}}
+.brand .bt{font-family:var(--f-display);font-weight:800;font-size:20px;line-height:1.1}
+.brand .bs{color:var(--muted);font-size:12px}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:16px;box-shadow:var(--shadow)}
+#login .card{padding:26px}
+#login h1{font-family:var(--f-display);font-size:21px;margin:0 0 4px}
+#login p.sub{color:var(--muted);font-size:13px;margin:0 0 18px}
+.field{display:flex;flex-direction:column;gap:10px}
+.inp{background:var(--bg2);border:1px solid var(--line);border-radius:10px;padding:11px 13px;color:var(--fg);outline:none;transition:border-color .15s,box-shadow .15s}
+.inp:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(59,130,246,.18)}
+.inp::placeholder{color:var(--faint)}
+.btn{border:0;border-radius:10px;padding:10px 15px;font-weight:600;font-size:13px;cursor:pointer;color:#fff;background:var(--accent);transition:filter .12s,transform .05s,box-shadow .15s;position:relative;overflow:hidden}
+.btn:hover{filter:brightness(1.12)} .btn:active{transform:translateY(1px) scale(.99)}
+.btn.block{width:100%;padding:13px;background:linear-gradient(180deg,var(--accent),var(--accent2));box-shadow:0 6px 18px rgba(37,99,235,.4)}
+.btn.sec{background:var(--panel2);border:1px solid var(--line);color:var(--fg)}
+.btn.sec:hover{border-color:var(--accent);color:#fff}
+.btn.ok{background:var(--ok);color:#06230f} .btn.okline{background:transparent;border:1px solid var(--ok);color:var(--ok)}
+.btn.okline:hover{background:var(--okbg)}
+.btn.warnline{background:transparent;border:1px solid var(--warn);color:var(--warn)} .btn.warnline:hover{background:var(--warnbg)}
+.btn.bad{background:transparent;border:1px solid var(--bad);color:var(--bad)} .btn.bad:hover{background:var(--bad);color:#fff}
+.btn.xs{padding:6px 10px;font-size:12px;border-radius:8px;color:var(--fg)}
+.btn.xs.ok{color:#06230f}
+.msg{font-size:13px;margin-top:12px;min-height:18px;color:var(--muted)}
+.msg.err{color:var(--bad)} .msg.ok{color:var(--ok)}
+
+/* App */
+.topbar{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:20px;flex-wrap:wrap;animation:fadeUp .4s ease both}
+.topbar .who{color:var(--muted);font-size:12.5px;margin-top:3px;display:flex;align-items:center;gap:7px}
+.live{width:8px;height:8px;border-radius:50%;background:var(--ok);box-shadow:0 0 0 0 rgba(34,197,94,.6);animation:pulse 2s infinite}
+@keyframes pulse{0%{box-shadow:0 0 0 0 rgba(34,197,94,.5)}70%{box-shadow:0 0 0 7px rgba(34,197,94,0)}100%{box-shadow:0 0 0 0 rgba(34,197,94,0)}}
+h1.title{font-family:var(--f-display);font-weight:800;font-size:24px;margin:0;letter-spacing:-.01em}
+.topbtns{display:flex;gap:9px;flex-wrap:wrap}
+
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:16px}
+.stat{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:15px 16px;position:relative;overflow:hidden;animation:fadeUp .45s ease both}
+.stat:nth-child(2){animation-delay:.05s}.stat:nth-child(3){animation-delay:.1s}.stat:nth-child(4){animation-delay:.15s}
+.stat .b{font-family:var(--f-display);font-weight:800;font-size:32px;line-height:1;font-variant-numeric:tabular-nums}
+.stat .s{color:var(--muted);font-size:11.5px;margin-top:6px;text-transform:uppercase;letter-spacing:.05em}
+.stat .rail{position:absolute;left:0;top:0;bottom:0;width:4px}
+.stat.p .rail{background:var(--warn)} .stat.a .rail{background:var(--ok)} .stat.b .rail{background:var(--bad)} .stat.t .rail{background:var(--accent)}
+.stat.p .b{color:var(--warn)} .stat.a .b{color:var(--ok)} .stat.b .b{color:var(--bad)}
+.stat .ic{position:absolute;right:12px;top:12px;font-size:17px;opacity:.5}
+
+.toolbar{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:14px}
+.toolbar .grow{flex:1;min-width:180px}
+.switch{display:flex;align-items:center;gap:7px;color:var(--muted);font-size:12.5px;cursor:pointer;user-select:none}
+
+/* Tarjetas de equipo */
+.list{display:flex;flex-direction:column;gap:12px}
+.eq{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:15px 16px;box-shadow:var(--shadow);
+    display:grid;grid-template-columns:1fr auto;gap:14px 18px;align-items:center;
+    transition:transform .14s,border-color .14s,box-shadow .14s;animation:fadeUp .4s ease both}
+.eq:hover{transform:translateY(-2px);border-color:#36507a;box-shadow:0 1px 2px rgba(0,0,0,.3),0 16px 40px rgba(0,0,0,.45)}
+.eq.vencidoborde{border-left:3px solid var(--bad)}
+.eq.prontoborde{border-left:3px solid var(--warn)}
+.eq .who{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.eq .who b{font-weight:600;font-size:15.5px}
+.eq .gmail{color:var(--accent);font-size:12.5px;cursor:pointer;text-decoration:none;display:inline-block;margin-top:3px}
+.eq .gmail:hover{text-decoration:underline}
+.eq .meta{display:flex;gap:7px;flex-wrap:wrap;align-items:center;margin-top:7px;color:var(--muted);font-size:12px}
+.code{font-family:var(--f-mono);font-size:12px;background:var(--bg2);border:1px solid var(--line);border-radius:6px;padding:2px 7px;color:var(--fg);cursor:pointer}
+.code:hover{border-color:var(--accent)}
+.badge{display:inline-flex;align-items:center;gap:5px;padding:3px 9px;border-radius:20px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:.03em}
+.b-activo{background:var(--okbg);color:var(--ok)} .b-pendiente{background:var(--warnbg);color:var(--warn)} .b-bloqueado{background:var(--badbg);color:var(--bad)}
+.b-multi{background:rgba(139,92,246,.16);color:#c4b1ff}
+
+.right{display:flex;align-items:center;gap:14px;min-width:0}
+.ring{position:relative;width:62px;height:62px;flex:none}
+.ring svg{transform:rotate(-90deg)}
+.ring .rtxt{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center}
+.ring .rn{font-family:var(--f-display);font-weight:800;font-size:19px;line-height:1;font-variant-numeric:tabular-nums}
+.ring .rl{font-size:8.5px;color:var(--muted);text-transform:uppercase;letter-spacing:.04em;margin-top:1px}
+.ringwrap{display:flex;flex-direction:column;align-items:center;gap:4px}
+.vencefch{font-size:10.5px;color:var(--faint);white-space:nowrap}
+.actcol{display:flex;flex-direction:column;gap:7px;align-items:flex-end}
+.acts{display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end;max-width:330px}
+
+/* Más opciones (expandible) */
+.more{grid-column:1/-1;border-top:1px dashed var(--line);margin-top:4px;padding-top:12px;display:none;animation:fadeUp .25s ease both}
+.eq.open .more{display:block}
+.more .row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.more .lbl{font-size:11.5px;color:var(--muted);text-transform:uppercase;letter-spacing:.04em;width:100%;margin-bottom:2px}
+.diasinp{width:74px;background:var(--bg2);border:1px solid var(--line);border-radius:8px;padding:7px 9px;color:var(--fg);outline:none;font-variant-numeric:tabular-nums}
+.diasinp:focus{border-color:var(--accent)}
+.linkmas{background:none;border:0;color:var(--muted);font-size:12px;cursor:pointer;padding:4px 6px;border-radius:6px}
+.linkmas:hover{color:var(--fg);background:var(--panel2)}
+
+.note{margin-top:18px;font-size:12.5px;color:var(--muted);background:var(--panel);border:1px solid var(--line);border-left:3px solid var(--accent);border-radius:10px;padding:13px 15px}
+.note b{color:var(--fg)}
+.empty{text-align:center;color:var(--muted);padding:40px 10px}
+.spin{display:inline-block;width:13px;height:13px;border:2px solid rgba(255,255,255,.3);border-top-color:#fff;border-radius:50%;animation:sp .7s linear infinite;vertical-align:-2px}
+@keyframes sp{to{transform:rotate(360deg)}}
+@keyframes fadeUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+.toast{position:fixed;left:50%;bottom:26px;transform:translateX(-50%) translateY(20px);background:var(--panel2);border:1px solid var(--line);color:var(--fg);padding:12px 20px;border-radius:12px;box-shadow:var(--shadow);opacity:0;transition:opacity .2s,transform .2s;font-size:13px;z-index:60;font-weight:600}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+.toast.ok{border-color:var(--ok)} .toast.err{border-color:var(--bad)}
+
+/* Modal App */
+.overlay{position:fixed;inset:0;background:rgba(5,9,18,.72);backdrop-filter:blur(4px);display:none;align-items:center;justify-content:center;z-index:55;padding:18px;animation:fade .2s ease both}
+@keyframes fade{from{opacity:0}to{opacity:1}}
+.overlay.show{display:flex}
+.modal{background:var(--panel);border:1px solid var(--line);border-radius:16px;box-shadow:var(--shadow);max-width:520px;width:100%;padding:22px;animation:fadeUp .25s ease both}
+.modal h2{font-family:var(--f-display);font-weight:700;font-size:18px;margin:0 0 4px}
+.modal p.sub{color:var(--muted);font-size:12.5px;margin:0 0 16px}
+.modal .mrow{display:flex;flex-direction:column;gap:7px;margin-bottom:14px}
+.modal label{font-size:11.5px;color:var(--muted);text-transform:uppercase;letter-spacing:.04em}
+.inrow{display:flex;gap:8px}
+.inrow .inp{flex:1;min-width:0;font-family:var(--f-mono);font-size:12.5px}
+.vbig{font-family:var(--f-display);font-weight:800;font-size:22px}
+.modal .x{float:right;background:none;border:0;color:var(--muted);font-size:20px;cursor:pointer;line-height:1}
+
+@media (max-width:760px){
+  .stats{grid-template-columns:repeat(2,1fr)}
+  .eq{grid-template-columns:1fr}
+  .right{align-items:flex-start;justify-content:flex-start}
+  .actcol{align-items:flex-start}
+  .acts{justify-content:flex-start}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <!-- LOGIN -->
+  <div id="login">
+    <div class="brand"><div class="logo">🎧</div><div><div class="bt">Buscador Musical</div><div class="bs">Panel de licencias</div></div></div>
+    <div class="card">
+      <h1>Entrar</h1>
+      <p class="sub">Administra los equipos y sus licencias.</p>
+      <div class="field">
+        <input id="email" class="inp" type="email" placeholder="Tu correo" autocomplete="username" />
+        <input id="pass" class="inp" type="password" placeholder="Tu contraseña" autocomplete="current-password" />
+        <button id="btnLogin" class="btn block">Entrar</button>
+      </div>
+      <div id="loginMsg" class="msg"></div>
+    </div>
+  </div>
+
+  <!-- APP -->
+  <div id="app" class="hide">
+    <div class="topbar">
+      <div>
+        <h1 class="title">Equipos con licencia</h1>
+        <div class="who"><span class="live"></span><span id="quien"></span></div>
+      </div>
+      <div class="topbtns">
+        <button id="btnApp" class="btn sec">⬇ App / Descarga</button>
+        <button id="btnSalir" class="btn sec">Salir</button>
+      </div>
+    </div>
+
+    <div class="stats" id="stats"></div>
+
+    <div class="card" style="padding:16px">
+      <div class="toolbar">
+        <select id="filtro" class="inp">
+          <option value="">Todos</option>
+          <option value="pendiente">Pendientes</option>
+          <option value="activo">Activos</option>
+          <option value="bloqueado">Bloqueados</option>
+        </select>
+        <input id="buscar" class="inp grow" type="text" placeholder="Buscar por código, nombre o Gmail…" />
+        <button id="btnRefrescar" class="btn sec">↻ Refrescar</button>
+        <label class="switch"><input type="checkbox" id="auto" checked /> Auto</label>
+      </div>
+      <div id="lista"></div>
+      <div id="appMsg" class="msg"></div>
+    </div>
+
+    <div class="note">
+      <b>Cómo controlar los días:</b> <b>Aprobar</b> da 30 días. Los botones <b>+1 · +7 · +30 · +90</b> suman tiempo y <b>−7</b> quita. En <b>“más opciones”</b> de cada equipo puedes <b>sumar los días que quieras</b> o <b>fijar una cantidad exacta</b>. El anillo de la derecha te muestra siempre cuántos días le quedan y la fecha de vencimiento.
+    </div>
+  </div>
+</div>
+
+<!-- MODAL APP -->
+<div id="overlay" class="overlay">
+  <div class="modal">
+    <button class="x" id="appX">×</button>
+    <h2>App & actualización</h2>
+    <p class="sub">La app se actualiza sola cuando publicas una versión nueva en GitHub. Aquí tienes el enlace para tus clientes y los accesos rápidos.</p>
+    <div class="mrow">
+      <label>Versión actual publicada</label>
+      <div class="inrow"><input id="verInp" class="inp" placeholder="ej: 1.0.0" /><button id="verSave" class="btn sec">Guardar</button></div>
+    </div>
+    <div class="mrow">
+      <label>Enlace de descarga para clientes</label>
+      <div class="inrow"><input id="dlInp" class="inp" /><button id="dlCopy" class="btn">Copiar</button></div>
+    </div>
+    <div class="inrow" style="margin-top:4px">
+      <button id="openRel" class="btn sec" style="flex:1">Abrir GitHub Releases</button>
+      <button id="openAct" class="btn sec" style="flex:1">Subir versión (Actions)</button>
+    </div>
+    <p class="sub" style="margin-top:14px">Para publicar una versión nueva: sube el instalador y <code>latest.yml</code> a una release de GitHub. Los clientes reciben la actualización automáticamente al abrir la app.</p>
+  </div>
+</div>
+
+<div id="toast" class="toast"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+const cfg = {
+  SUPABASE_URL: 'https://casehlekzybctrsaliil.supabase.co',
+  SUPABASE_ANON_KEY: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNhc2VobGVrenliY3Ryc2FsaWlsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTA2OTg2OTIsImV4cCI6MjEwNjI3NDY5Mn0.klBMr0ExkSo7Il_R3ldm0p78mF3KIz9GQh2d2FmU4DQ',
+};
+const REPO = 'webze/buscador-musical';
+const DL_DEFAULT = 'https://github.com/'+REPO+'/releases/latest/download/Buscador-Musical-Setup.exe';
+const sb = window.supabase.createClient(cfg.SUPABASE_URL, cfg.SUPABASE_ANON_KEY);
+const $ = (id) => document.getElementById(id);
+const DIA = 86400000;
+let timer = null, filas = [];
+
+function esc(s){return String(s==null?'':s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]))}
+function corto(c){return String(c||'').slice(0,12).replace(/(.{4})(.{4})(.{4})/,'$1-$2-$3')}
+function fecha(v){if(!v)return '—';const d=new Date(v);return d.toLocaleDateString('es-PE')+' '+d.toLocaleTimeString('es-PE',{hour:'2-digit',minute:'2-digit'})}
+function soloFecha(v){if(!v)return '—';return new Date(v).toLocaleDateString('es-PE',{day:'2-digit',month:'short',year:'numeric'})}
+function diasDe(v){if(!v)return null;return Math.ceil((new Date(v).getTime()-Date.now())/DIA)}
+function toast(t,cls){const e=$('toast');e.textContent=t;e.className='toast show '+(cls||'');clearTimeout(e._t);e._t=setTimeout(()=>e.className='toast',1900)}
+function lsGet(k,d){try{return localStorage.getItem(k)??d}catch(_){return d}}
+function lsSet(k,v){try{localStorage.setItem(k,v)}catch(_){}}
+
+async function sesion(){const {data}=await sb.auth.getSession();if(data.session)entrar(data.session.user);else{$('login').classList.remove('hide');$('app').classList.add('hide')}}
+function entrar(u){$('login').classList.add('hide');$('app').classList.remove('hide');$('quien').textContent='Conectado como '+u.email;cargar();auto()}
+
+$('btnLogin').addEventListener('click',login);
+$('pass').addEventListener('keydown',e=>{if(e.key==='Enter')login()});
+async function login(){
+  $('loginMsg').className='msg';$('loginMsg').innerHTML='<span class="spin"></span> Entrando…';
+  const {data,error}=await sb.auth.signInWithPassword({email:$('email').value.trim(),password:$('pass').value});
+  if(error){$('loginMsg').className='msg err';$('loginMsg').textContent=/Invalid login/.test(error.message)?'Correo o contraseña incorrectos.':('No se pudo entrar: '+error.message);return}
+  entrar(data.user);
+}
+$('btnSalir').addEventListener('click',async()=>{await sb.auth.signOut();location.reload()});
+$('btnRefrescar').addEventListener('click',()=>cargar());
+$('filtro').addEventListener('change',()=>cargar());
+$('buscar').addEventListener('input',()=>{clearTimeout(window._b);window._b=setTimeout(()=>cargar(),300)});
+$('auto').addEventListener('change',auto);
+function auto(){clearTimeout(timer);if($('auto').checked)timer=setTimeout(function loop(){cargar(true);timer=setTimeout(loop,15000)},15000)}
+
+/* Modal App */
+$('btnApp').addEventListener('click',()=>{$('overlay').classList.add('show')});
+$('appX').addEventListener('click',()=>{$('overlay').classList.remove('show')});
+$('overlay').addEventListener('click',e=>{if(e.target===$('overlay'))$('overlay').classList.remove('show')});
+$('dlInp').value=lsGet('bm_dl',DL_DEFAULT);
+$('verInp').value=lsGet('bm_ver','');
+$('verSave').addEventListener('click',()=>{lsSet('bm_ver',$('verInp').value.trim());toast('Versión guardada','ok')});
+$('dlCopy').addEventListener('click',async()=>{const v=$('dlInp').value.trim();lsSet('bm_dl',v);try{await navigator.clipboard.writeText(v);toast('Enlace copiado','ok')}catch(_){$('dlInp').select();toast('Selecciona y copia','')}});
+$('openRel').addEventListener('click',()=>window.open('https://github.com/'+REPO+'/releases','_blank'));
+$('openAct').addEventListener('click',()=>window.open('https://github.com/'+REPO+'/releases/new','_blank'));
+
+async function cargar(silencio){
+  if(!silencio){$('appMsg').className='msg';$('appMsg').innerHTML='<span class="spin"></span> Cargando…'}
+  let q=sb.from('equipos').select('*').order('visto_ultimo',{ascending:false,nullsFirst:false});
+  const f=$('filtro').value; if(f)q=q.eq('estado',f);
+  const txt=$('buscar').value.trim().replace(/-/g,''); if(txt)q=q.or(`codigo.ilike.${txt}%,cliente.ilike.%${txt}%,gmail.ilike.%${txt}%`);
+  const {data,error}=await q.limit(500);
+  if(error){$('appMsg').className='msg err';$('appMsg').textContent='Error: '+error.message;return}
+  $('appMsg').textContent='';filas=data||[];pintar(filas);stats();
+}
+async function stats(){
+  const c=async e=>{const{count}=await sb.from('equipos').select('*',{count:'exact',head:true}).eq('estado',e);return count||0};
+  const[p,a,b]=await Promise.all([c('pendiente'),c('activo'),c('bloqueado')]);
+  $('stats').innerHTML=
+    tile('p',p,'Pendientes','⏳')+tile('a',a,'Activos','✅')+tile('b',b,'Bloqueados','⛔')+tile('t',p+a+b,'Total · límite 100','📊');
+  for(const el of $('stats').querySelectorAll('.b'))countUp(el);
+}
+function tile(cls,n,l,ic){return `<div class="stat ${cls}"><div class="rail"></div><div class="ic">${ic}</div><div class="b" data-n="${n}">0</div><div class="s">${l}</div></div>`}
+function countUp(el){const to=+el.dataset.n||0;if(to<=0){el.textContent='0';return}const t0=performance.now(),dur=600;function f(t){const k=Math.min(1,(t-t0)/dur);el.textContent=Math.round(to*(1-Math.pow(1-k,3)));if(k<1)requestAnimationFrame(f)}requestAnimationFrame(f)}
+
+function ring(d,estado){
+  // anillo circular: 30 días = vuelta completa
+  const R=26,C=2*Math.PI*R;
+  let frac=0,col='var(--faint)',n='—',l=estado;
+  if(estado==='activo'&&d!=null){
+    frac=Math.max(0,Math.min(1,d/30));
+    col=d<0?'var(--bad)':(d<=7?'var(--warn)':'var(--ok)');
+    n=d<0?'0':String(d); l=d<0?'vencido':'días';
+  } else if(estado==='pendiente'){col='var(--warn)';n='•';l='pend.';frac=0}
+  else if(estado==='bloqueado'){col='var(--bad)';n='⛔';l='bloq.';frac=0}
+  const off=C*(1-frac);
+  return `<div class="ring"><svg width="62" height="62" viewBox="0 0 62 62">
+    <circle cx="31" cy="31" r="${R}" fill="none" stroke="var(--line)" stroke-width="5"/>
+    <circle cx="31" cy="31" r="${R}" fill="none" stroke="${col}" stroke-width="5" stroke-linecap="round"
+      stroke-dasharray="${C.toFixed(1)}" stroke-dashoffset="${off.toFixed(1)}" style="transition:stroke-dashoffset .6s ease"/>
+  </svg><div class="rtxt"><div class="rn" style="color:${col}">${n}</div><div class="rl">${l}</div></div></div>`;
+}
+
+function pintar(rows){
+  const cont=$('lista');
+  if(!rows.length){cont.innerHTML='<div class="empty">No hay equipos aquí todavía.</div>';return}
+  const porGmail=new Map();for(const r of filas){const g=(r.gmail||'').toLowerCase();if(g)porGmail.set(g,(porGmail.get(g)||0)+1)}
+  cont.innerHTML='<div class="list">'+rows.map((r,i)=>{
+    const d=diasDe(r.vence);
+    const borde=(r.estado==='activo'&&d!=null)?(d<0?'vencidoborde':(d<=7?'prontoborde':'')):'';
+    const ncount=porGmail.get((r.gmail||'').toLowerCase())||0;
+    const multi=ncount>1?` <span class="badge b-multi">${ncount} equipos</span>`:'';
+    const acts=[];
+    if(r.estado==='pendiente'){acts.push(bt('aprobar',r.id,'ok','Aprobar 30d'));acts.push(bt('prueba',r.id,'okline','Prueba 7d'))}
+    if(r.estado==='activo'){acts.push(bt('add',r.id,'ok','+1',1));acts.push(bt('add',r.id,'okline','+7',7));acts.push(bt('add',r.id,'okline','+30',30));acts.push(bt('add',r.id,'okline','+90',90));acts.push(bt('add',r.id,'warnline','−7',-7));acts.push(bt('bloquear',r.id,'bad','Bloquear'))}
+    if(r.estado==='bloqueado'){acts.push(bt('desbloquear',r.id,'ok','Desbloquear'))}
+    const vtxt=r.estado==='activo'&&r.vence?`<div class="vencefch">${d<0?'venció '+soloFecha(r.vence):'hasta '+soloFecha(r.vence)}</div>`:'';
+    return `<div class="eq ${borde}" data-row="${r.id}" style="animation-delay:${Math.min(i*30,300)}ms">
+      <div>
+        <div class="who"><b>${esc(r.cliente)||'<span style=color:var(--faint)>Sin nombre</span>'}</b> <span class="badge b-${r.estado}">${r.estado}</span>${multi}</div>
+        <a class="gmail" data-g="${esc(r.gmail||'')}">${esc(r.gmail||'—')}</a>
+        <div class="meta"><span class="code" data-copy="${esc(r.codigo||'')}" title="Copiar código">${corto(r.codigo)}</span> · ${esc(r.nombre_equipo||'equipo')} · visto ${fecha(r.visto_ultimo)}</div>
+      </div>
+      <div class="right">
+        <div class="ringwrap">${ring(d,r.estado)}${vtxt}</div>
+        <div class="actcol"><div class="acts">${acts.join('')}</div>
+          <button class="linkmas" data-more="${r.id}">⚙ más opciones</button>
+        </div>
+      </div>
+      <div class="more" id="more-${r.id}">
+        <div class="row"><span class="lbl">Días a medida</span>
+          <input class="diasinp" type="number" id="din-${r.id}" placeholder="30" />
+          <button class="btn xs ok" data-a="addn" data-id="${r.id}">Sumar días</button>
+          <button class="btn xs okline" data-a="setn" data-id="${r.id}">Fijar exacto</button>
+          <button class="btn xs sec" data-a="liberar" data-id="${r.id}">Liberar equipo</button>
+        </div>
+      </div>
+    </div>`;
+  }).join('')+'</div>';
+  for(const b of cont.querySelectorAll('[data-a]'))b.addEventListener('click',accion);
+  for(const g of cont.querySelectorAll('.gmail'))g.addEventListener('click',()=>{$('filtro').value='';$('buscar').value=g.dataset.g;cargar()});
+  for(const c of cont.querySelectorAll('.code'))c.addEventListener('click',async()=>{try{await navigator.clipboard.writeText(c.dataset.copy);toast('Código copiado','ok')}catch(_){}});
+  for(const m of cont.querySelectorAll('[data-more]'))m.addEventListener('click',()=>{const eq=document.querySelector('.eq[data-row="'+m.dataset.more+'"]');eq.classList.toggle('open');m.textContent=eq.classList.contains('open')?'⚙ ocultar':'⚙ más opciones'});
+}
+function bt(a,id,cls,txt,n){return `<button class="btn ${cls} xs" data-a="${a}" data-id="${id}"${n!=null?` data-n="${n}"`:''}>${txt}</button>`}
+
+async function accion(ev){
+  const b=ev.currentTarget,id=b.dataset.id,a=b.dataset.a,now=Date.now();
+  const cur=filas.find(x=>String(x.id)===String(id));
+  const base=(cur&&cur.vence&&new Date(cur.vence).getTime()>now)?new Date(cur.vence).getTime():now;
+  let patch=null,ok='';
+  if(a==='aprobar'){patch={estado:'activo',vence:new Date(now+30*DIA).toISOString()};ok='Aprobado · 30 días'}
+  else if(a==='prueba'){patch={estado:'activo',vence:new Date(now+7*DIA).toISOString()};ok='Prueba de 7 días'}
+  else if(a==='add'){const n=+b.dataset.n;patch={estado:'activo',vence:new Date(Math.max(now,base)+n*DIA).toISOString()};ok=(n>0?'+':'')+n+' días'}
+  else if(a==='addn'){const n=parseInt($('din-'+id).value,10);if(!n){toast('Escribe un número de días','err');return}patch={estado:'activo',vence:new Date(base+n*DIA).toISOString()};ok=(n>0?'+':'')+n+' días'}
+  else if(a==='setn'){const n=parseInt($('din-'+id).value,10);if(!(n>=0)){toast('Escribe los días (0 o más)','err');return}patch={estado:'activo',vence:new Date(now+n*DIA).toISOString()};ok='Fijado en '+n+' días'}
+  else if(a==='bloquear'){patch={estado:'bloqueado'};ok='Equipo bloqueado'}
+  else if(a==='desbloquear'){patch={estado:'activo'};ok='Desbloqueado'}
+  else if(a==='liberar'){
+    if(!confirm('¿Borrar este equipo? Si el cliente vuelve a abrir la app, saldrá de nuevo como pendiente.'))return;
+    const{error}=await sb.from('equipos').delete().eq('id',id);
+    if(error){toast('Error: '+error.message,'err')}else{toast('Equipo liberado','ok')}
+    cargar();return;
+  }
+  b.disabled=true;
+  const{error}=await sb.from('equipos').update(patch).eq('id',id);
+  if(error){toast('Error: '+error.message,'err');b.disabled=false;return}
+  toast(ok,'ok');cargar();
+}
+
+sesion();
+</script>
+</body>
+</html>
